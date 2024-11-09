@@ -1,8 +1,15 @@
-{
-    "site" : "",
+{    
+    "urls" : [
+        "https://www.google.com"
+    ],
     "sender_email" : "",
-    "sender_name" : "",
-    "recip_email" : "",
-    "recip_name" : "",
-    "sendgrid_api_key" : ""
+    "sender_name" : "Site Uptime Monitor",
+    "smtp_server" : "smtp.sendgrid.net",
+    "smtp_port" : 465,
+    "smtp_auth" : true,
+    "smtp_username" : "",
+    "smtp_password" : "",
+    "recipients" : [
+        {"recip_email" : "youremail@email.com", "recip_name" : "Your Name"}
+    ]    
 }
