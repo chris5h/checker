@@ -1,0 +1,8 @@
+{
+    "site" : "",
+    "sender_email" : "",
+    "sender_name" : "",
+    "recip_email" : "",
+    "recip_name" : "",
+    "sendgrid_api_key" : ""
+}
