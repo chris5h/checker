@@ -1,4 +1,8 @@
-A simple PHP script to check uptime of websites.
-Checks an array of sites for a valid 2XX or 3XX response code.
-Logs results.   If there is a change between that last run and current run, it sends a notification of the site being up or down to an array of recipients.
-All configuration is done via a central JSON file.
+Never be caught off guard by website downtime! This easy-to-use PHP script automatically monitors your websites and notifies you if any of them go down (or come back up).
+
+**Features:**
+
+Checks for valid HTTP responses (2XX/3XX)
+Logs uptime/downtime events
+Sends alerts to multiple recipients
+Simple configuration via a JSON file
