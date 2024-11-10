@@ -44,6 +44,7 @@
 		$newResult = in_array($status, range(200, 399)) ? true : false;
 
 		if ($pass["result"] === $newResult){ //no change between last run and now
+			$json[$url] = $pass;	//this is set so that non changing results dont get wiped out when file is written
 			echo "$url - no change.   move on";		
 		}	elseif (($pass["result"] === true || $pass["result"] == "new") && !$newResult){	//last run was a success this run is a failure
 			$subject = "Website Uptime Monitor - Site Down";
