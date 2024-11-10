@@ -5,20 +5,20 @@
 	require __DIR__ . '/vendor/autoload.php';
 	
 	if (file_exists("settings.json")){  //make sure settings file exists
-		try {
-			$settings = file_get_contents('settings.json'); //read settings file
-			$settings = JSON_DECODE($settings, TRUE);	//turning json values into array
+		$settings = file_get_contents('settings.json'); //read settings file
+		$settings = JSON_DECODE($settings, TRUE);	//turning json values into array
+		if (!is_array($settings)){
+			echo "Error opening settings.json file.   Refer to settings_TEMPLATE.json.";	//notify to create settings json file
+			error_log("Error opening settings.json file.   Refer to settings_TEMPLATE.json.", 0);		//notify to create settings json file
+			exit;
+		}	else	{
 			foreach($settings as $key => $value){	//iterate thorugh all array members
 				define($key, $value);	//create constants of the settings
 			}
-		} catch (Exception $e) {
-			echo "Error opening settings.json file.   Refer to settings_TEMPLATE.json.";
-			error_log("Error opening settings.json file.   Refer to settings_TEMPLATE.json.", 0);
-			exit;
 		}
 	}	else	{
-		echo "Error opening settings.json file.   Refer to settings_TEMPLATE.json.";
-		error_log("Error opening settings.json file.   Refer to settings_TEMPLATE.json.", 0);
+		echo "Error opening settings.json file.   Refer to settings_TEMPLATE.json.";		//notify to create settings json file
+		error_log("Error opening settings.json file.   Refer to settings_TEMPLATE.json.", 0);		//notify to create settings json file
 		exit;
 	}
 
@@ -51,7 +51,7 @@
 			sendMessage($subject, $body);
 			$json[$url] = ["result" => $newResult, "time" => $now];
 			echo "website was up and is now down";
-		}	elseif ((!$pass["result"] || $pass["result"] == "new")&& $newResult){
+		}	elseif ((!$pass["result"] || $pass["result"] == "new")&& $newResult){	//last run was a failure and this run is a success
 			$subject = "Website Uptime Monitor - Site Back Up";
 			$body = "The site $url is back up.   The site returned a status code of $status\r\nSite had been down since {$pass["time"]}.";
 			sendMessage($subject, $body);
@@ -60,7 +60,6 @@
 		}
 	}
 	logResults($json);
-	
 
 	function checkSite($url){
 		try {
@@ -79,13 +78,13 @@
 	}
 
 	function logResults($json){		
-		$file = fopen("results.json", "w");
-		fwrite($file, JSON_ENCODE($json));
-		fclose($file);
+		$file = fopen("results.json", "w");	//open file 
+		fwrite($file, JSON_ENCODE($json));	//write json
+		fclose($file);	//close file
 	}
 
 	function sendMessage($subject, $body){
-		$html = nl2br($body);
+		$html = nl2br($body);				//generate html version  of plain text email body
 		$mail = new PHPMailer(true);
 		try {
 			//Server settings
@@ -101,7 +100,7 @@
 			$mail->setFrom(sender_email, sender_name);	
 		
 			foreach (recipients as $recip){
-				$mail->addAddress($recip["recip_email"], $recip["recip_name"]);     //Add a recipient			}
+				$mail->addAddress($recip["recip_email"], $recip["recip_name"]);     //Add a recipient
 			}
 			//Content
 			$mail->isHTML(true);                                  //Set email format to HTML
