@@ -3,6 +3,9 @@ Never be caught off guard by website downtime! This easy-to-use PHP script autom
 **Features:**
 
 Checks for valid HTTP responses (2XX/3XX)
+
 Logs uptime/downtime events
+
 Sends alerts to multiple recipients
+
 Simple configuration via a JSON file
