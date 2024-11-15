@@ -4,8 +4,8 @@
 	use PHPMailer\PHPMailer\Exception;
 	require __DIR__ . '/vendor/autoload.php';
 	
-	if (file_exists("settings.json")){  //make sure settings file exists
-		$settings = file_get_contents('settings.json'); //read settings file
+	if (file_exists(__DIR__ . "settings.json")){  //make sure settings file exists
+		$settings = file_get_contents(__DIR__ . 'settings.json'); //read settings file
 		$settings = JSON_DECODE($settings, TRUE);	//turning json values into array
 		if (!is_array($settings)){
 			echo "Error opening settings.json file.   Refer to settings_TEMPLATE.json.";	//notify to create settings json file
@@ -22,8 +22,8 @@
 		exit;
 	}
 
-	if (file_exists("results.json")) {
-		$json = file_get_contents('results.json'); //open results from last change
+	if (file_exists(__DIR__ . "results.json")) {
+		$json = file_get_contents(__DIR__ . 'results.json'); //open results from last change
 		$json = JSON_DECODE($json, true);
 		if (!is_array($json)){
 			$json = [];
