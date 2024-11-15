@@ -79,7 +79,7 @@
 	}
 
 	function logResults($json){		
-		$file = fopen(__DIR__ . "results.json", "w");	//open file 
+		$file = fopen(__DIR__ . "/results.json", "w");	//open file 
 		fwrite($file, JSON_ENCODE($json));	//write json
 		fclose($file);	//close file
 	}
