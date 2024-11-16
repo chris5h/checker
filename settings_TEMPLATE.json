@@ -1,6 +1,6 @@
 {    
-    "urls" : [
-        "https://www.google.com"
+    "sites" : [
+        {"name" : "Google", "url" : "https://www.google.com"}        
     ],
     "sender_email" : "",
     "sender_name" : "Site Uptime Monitor",
