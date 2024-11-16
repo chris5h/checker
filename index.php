@@ -33,34 +33,41 @@
 	}
 
 	$now = date("m/d/Y h:i:s A" , strtotime("now"));
-	foreach (urls as $url){
-		if (array_key_exists($url, $json)){
-			$pass = $json[$url];
-		}	else	{
-			$pass = ["result" => "new", "time" => $now];
-		}
+	$wasChange = false;
 
-		$status = checkSite($url);
-		$newResult = in_array($status, range(200, 399)) ? true : false;
+	if (is_array(sites)){
+		foreach (sites as $site){
+			if (array_key_exists($site["name"], $json)){
+				$pass = $json[$site["name"]];
+			}	else	{
+				$pass = ["result" => "new", "time" => $now];
+			}
 
-		if ($pass["result"] === $newResult){ //no change between last run and now
-			$json[$url] = $pass;	//this is set so that non changing results dont get wiped out when file is written
-			echo "$url - no change.   move on";		
-		}	elseif (($pass["result"] === true || $pass["result"] == "new") && !$newResult){	//last run was a success this run is a failure
-			$subject = "Website Uptime Monitor - Site Down";
-			$body = "There was an attempting to test the site $url.   The site returned a status code of $status\r\nLast successful test was at {$pass["time"]}.";
-			sendMessage($subject, $body);
-			$json[$url] = ["result" => $newResult, "time" => $now];
-			echo "website was up and is now down";
-		}	elseif ((!$pass["result"] || $pass["result"] == "new")&& $newResult){	//last run was a failure and this run is a success
-			$subject = "Website Uptime Monitor - Site Back Up";
-			$body = "The site $url is back up.   The site returned a status code of $status\r\nSite had been down since {$pass["time"]}.";
-			sendMessage($subject, $body);
-			$json[$url] = ["result" => $newResult, "time" => $now];
-			echo "website was down and is now up";
+			$status = checkSite($site["url"]);
+			$newResult = in_array($status, range(200, 399)) ? true : false;
+			if ($pass["result"] === $newResult){ //no change between last run and now
+				echo "{$site['url']} - no change.   move on";		
+			}	elseif (($pass["result"] === true || $pass["result"] == "new") && !$newResult){	//last run was a success this run is a failure
+				$subject = "Website Uptime Monitor - {$site['name']} Site Down";
+				$body = "There was an attempting to test the {$site['name']} site at {$site['url']}.  The site returned a status code of $status\r\nLast successful test was at {$pass["time"]}.";
+				sendMessage($subject, $body);
+				$json[$site["name"]] = ["result" => $newResult, "time" => $now];
+				echo "{$site['name']} website was up and is now down";
+				$wasChange = true;
+			}	elseif ((!$pass["result"] || $pass["result"] == "new")&& $newResult){	//last run was a failure and this run is a success
+				$subject = "Website Uptime Monitor - {$site['name']} Site Back Up";
+				$body = "The {$site['name']} site is back up at {$site['url']}.   The site returned a status code of $status\r\nSite had been down since {$pass["time"]}.";
+				sendMessage($subject, $body);
+				$json[$site["name"]] = ["result" => $newResult, "time" => $now];
+				echo "{$site['name']} website was down and is now up";
+				$wasChange = true;
+			}
 		}
 	}
-	logResults($json);
+
+	if ($wasChange){
+		logResults($json);
+	}
 
 	function checkSite($url){
 		try {
