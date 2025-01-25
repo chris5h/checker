@@ -32,7 +32,14 @@
 		$json = [];
 	}
 
-	$now = date("m/d/Y h:i:s A" , strtotime("now"));
+	if (timezone_offset){
+		$utcDateTime = new DateTime("now", new DateTimeZone('UTC'));
+		$utcDateTime->setTimezone(new DateTimeZone(timezone));
+		$now = $utcDateTime->format("m/d/Y h:i:s A");
+	}	else	{
+		$now = date("m/d/Y h:i:s A" , strtotime("now"));
+	}
+	die($now);
 	$wasChange = false;
 
 	if (is_array(sites)){

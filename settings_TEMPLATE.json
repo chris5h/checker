@@ -2,6 +2,8 @@
     "sites" : [
         {"name" : "Google", "url" : "https://www.google.com"}        
     ],
+    "timezone_offset" : true,
+    "timezone" : "America/Los_Angeles",
     "sender_email" : "",
     "sender_name" : "Site Uptime Monitor",
     "smtp_server" : "smtp.sendgrid.net",
@@ -11,5 +13,5 @@
     "smtp_password" : "",
     "recipients" : [
         {"recip_email" : "youremail@email.com", "recip_name" : "Your Name"}
-    ]    
+    ]
 }
