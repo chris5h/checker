@@ -39,7 +39,6 @@
 	}	else	{
 		$now = date("m/d/Y h:i:s A" , strtotime("now"));
 	}
-	die($now);
 	$wasChange = false;
 
 	if (is_array(sites)){
